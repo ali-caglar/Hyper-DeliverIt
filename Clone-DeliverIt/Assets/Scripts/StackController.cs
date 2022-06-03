@@ -5,11 +5,11 @@ public class StackController : MonoBehaviour
 {
     [SerializeField] private Transform _stackHolder;
 
-    private Stack<Cargo> _cargoStack;
+    private List<Cargo> _cargoList;
 
     private void OnEnable()
     {
-        _cargoStack = new Stack<Cargo>();
+        _cargoList = new List<Cargo>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,18 +28,19 @@ public class StackController : MonoBehaviour
         cargoTransform.localPosition = NewCargoPosition(cargo.Height);
         cargoTransform.localRotation = cargoTransform.rotation;
 
-        _cargoStack.Push(cargo);
+        _cargoList.Add(cargo);
     }
 
     public bool RemoveFromStack()
     {
-        if (_cargoStack.Count <= 0)
+        if (_cargoList.Count <= 0)
         {
             return false;
         }
         else
         {
-            _cargoStack.Pop().gameObject.SetActive(false);
+            _cargoList[^1].gameObject.SetActive(false);
+            _cargoList.RemoveAt(_cargoList.Count - 1);
             
             return true;
         }
@@ -49,11 +50,11 @@ public class StackController : MonoBehaviour
     {
         Vector3 position = Vector3.zero;
 
-        if (_cargoStack.Count == 0)
+        if (_cargoList.Count == 0)
         {
             position.y += cargoHeight / 2;
         }
-        else if (_cargoStack.Count > 0)
+        else if (_cargoList.Count > 0)
         {
             position.y = HeightOfTheStack() + cargoHeight / 2;
         }
@@ -63,7 +64,7 @@ public class StackController : MonoBehaviour
 
     private float HeightOfTheStack()
     {
-        Cargo lastCargo = _cargoStack.Peek();
+        Cargo lastCargo = _cargoList[^1];
         return lastCargo.transform.localPosition.y + lastCargo.Height / 2;
     }
 }
