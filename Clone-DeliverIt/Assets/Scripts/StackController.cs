@@ -46,20 +46,10 @@ public class StackController : MonoBehaviour
         }
     }
 
-    private Vector3 NewCargoPosition(float cargoHeight)
     {
-        Vector3 position = Vector3.zero;
 
-        if (_cargoList.Count == 0)
         {
-            position.y += cargoHeight / 2;
         }
-        else if (_cargoList.Count > 0)
-        {
-            position.y = HeightOfTheStack() + cargoHeight / 2;
-        }
-
-        return position;
     }
 
     private float HeightOfTheStack()
