@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class Customer : MonoBehaviour, IInteractable
 {
-    [SerializeField] private int _expectedCargo;
+    [SerializeField] private int _expectedCargoCount;
+    [SerializeField] private Transform _cargoDeliverSpot;
 
     private bool _isUsed;
+    private float _heightOfTheStack;
 
     public void Interact(PlayerController playerController)
     {
@@ -15,11 +17,15 @@ public class Customer : MonoBehaviour, IInteractable
         if (_isUsed) return;
         _isUsed = true;
 
-        for (int i = 0; i < _expectedCargo; i++)
+        for (int i = 0; i < _expectedCargoCount; i++)
         {
-            if (stackController.RemoveFromStack())
+            if (stackController.CargoCountOnStack > 0)
             {
-                
+                Cargo cargo = stackController.DeliverCargo();
+                if (cargo == null) return;
+
+                cargo.SetNewPositionOfCargo(_cargoDeliverSpot, _heightOfTheStack);
+                _heightOfTheStack = cargo.transform.localPosition.y + cargo.Height / 2;
             }
             else
             {

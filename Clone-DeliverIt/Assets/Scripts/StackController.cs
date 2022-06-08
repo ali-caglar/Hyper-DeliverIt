@@ -4,6 +4,8 @@ using UnityEngine;
 public class StackController : MonoBehaviour
 {
     [SerializeField] private Transform _stackHolder;
+    [SerializeField] private GameObject _moneyPrefab;
+
     private int _cargoCountOnStack;
     private int _moneyCountOnStack;
 
@@ -48,7 +50,15 @@ public class StackController : MonoBehaviour
         return null;
     }
 
+    private void ClaimMoney()
     {
+        Cargo moneyCargo = Instantiate(_moneyPrefab).GetComponent<Cargo>();
+
+        moneyCargo.SetNewPositionOfCargo(_stackHolder, GetHeightOfTheCargo(_moneyCountOnStack - 1));
+
+        _cargoList[_moneyCountOnStack] = moneyCargo;
+        _moneyCountOnStack++;
+    }
 
     private void UpdateCargoBoxesPositions()
     {
