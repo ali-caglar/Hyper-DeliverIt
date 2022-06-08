@@ -4,8 +4,12 @@ using UnityEngine;
 public class StackController : MonoBehaviour
 {
     [SerializeField] private Transform _stackHolder;
+    private int _cargoCountOnStack;
+    private int _moneyCountOnStack;
 
     private List<Cargo> _cargoList;
+
+    public int CargoCountOnStack => _cargoCountOnStack;
 
     private void OnEnable()
     {
@@ -22,39 +26,46 @@ public class StackController : MonoBehaviour
 
     public void AddToStack(Cargo cargo)
     {
-        Transform cargoTransform = cargo.transform;
-
-        cargoTransform.SetParent(_stackHolder);
-        cargoTransform.localPosition = NewCargoPosition(cargo.Height);
-        cargoTransform.localRotation = cargoTransform.rotation;
+        cargo.SetNewPositionOfCargo(_stackHolder, GetHeightOfTheCargo(_cargoList.Count - 1));
 
         _cargoList.Add(cargo);
+        _cargoCountOnStack++;
     }
 
-    public bool RemoveFromStack()
+    public Cargo DeliverCargo()
     {
-        if (_cargoList.Count <= 0)
+        if (_cargoList.Count > 0)
         {
-            return false;
+            Cargo cargo = _cargoList[_moneyCountOnStack];
+            _cargoCountOnStack--;
+
+            ClaimMoney();
+            UpdateCargoBoxesPositions();
+
+            return cargo;
         }
-        else
-        {
-            _cargoList[^1].gameObject.SetActive(false);
-            _cargoList.RemoveAt(_cargoList.Count - 1);
-            
-            return true;
-        }
+
+        return null;
     }
 
     {
 
+    private void UpdateCargoBoxesPositions()
+    {
+        for (int i = _moneyCountOnStack; i < _cargoList.Count; i++)
         {
+            _cargoList[i].SetNewPositionOfCargo(_stackHolder, GetHeightOfTheCargo(i - 1));
         }
     }
 
-    private float HeightOfTheStack()
+    private float GetHeightOfTheCargo(int index)
     {
-        Cargo lastCargo = _cargoList[^1];
-        return lastCargo.transform.localPosition.y + lastCargo.Height / 2;
+        if (_cargoList.Count == 0 || index < 0)
+        {
+            return 0;
+        }
+
+        Cargo cargo = _cargoList[index];
+        return cargo.transform.localPosition.y + cargo.Height / 2;
     }
 }
