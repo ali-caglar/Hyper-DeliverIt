@@ -16,19 +16,21 @@ public class MovementController : MonoBehaviour
 
     private void OnEnable()
     {
+        GameManager.OnGameStateChanged += HandleGameStateChanges;
         LeanTouch.OnFingerOld += StartMoving;
         LeanTouch.OnFingerUp += StopMoving;
     }
 
     private void OnDisable()
     {
+        GameManager.OnGameStateChanged -= HandleGameStateChanges;
         LeanTouch.OnFingerOld -= StartMoving;
         LeanTouch.OnFingerUp -= StopMoving;
     }
 
     private void Update()
     {
-        if (_pathCreator == null) return;
+        if (_pathCreator == null || GameManager.Instance.CurrentGameState != GameState.Playing) return;
 
         if (_isTouching)
         {
