@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,6 +49,33 @@ public class StackController : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void Crash()
+    {
+        if (_cargoList.Count == 0)
+        {
+            GameManager.Instance.ChangeGameState(GameState.Lose);
+            return;
+        }
+
+        GameManager.Instance.ChangeGameState(GameState.Crashed);
+        StartCoroutine(RecoverFromCrash(1f));
+
+        for (int i = 0; i < _cargoList.Count; i++)
+        {
+            _cargoList[i].HandleCrash(i);
+        }
+
+        _cargoCountOnStack = 0;
+        _moneyCountOnStack = 0;
+        _cargoList.Clear();
+    }
+
+    private IEnumerator RecoverFromCrash(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        GameManager.Instance.ChangeGameState(GameState.Playing);
     }
 
     private void ClaimMoney()

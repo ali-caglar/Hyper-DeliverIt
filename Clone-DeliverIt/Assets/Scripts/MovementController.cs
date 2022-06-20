@@ -46,6 +46,14 @@ public class MovementController : MonoBehaviour
         transform.rotation = _pathCreator.path.GetRotationAtDistance(_distanceTravelled, _endOfPathInstruction);
     }
 
+    private void HandleGameStateChanges()
+    {
+        if (GameManager.Instance.CurrentGameState != GameState.Playing)
+        {
+            _currentSpeed = 0;
+        }
+    }
+
     private void Accelerate()
     {
         if (_currentSpeed < _maxSpeed)
