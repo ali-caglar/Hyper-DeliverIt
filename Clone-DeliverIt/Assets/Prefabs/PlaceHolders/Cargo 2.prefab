@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 6832057240187085611}
   - component: {fileID: 3909622280911153632}
   - component: {fileID: 8418362422284644273}
-  m_Layer: 0
+  - component: {fileID: 1528618619478868877}
+  m_Layer: 7
   m_Name: Cargo 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,3 +112,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _height: 0.066
+--- !u!54 &1528618619478868877
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493247227959273525}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
