@@ -1,12 +1,20 @@
 using UnityEngine;
+using TMPro;
 
 public class Customer : MonoBehaviour, IInteractable
 {
     [SerializeField] private int _expectedCargoCount;
     [SerializeField] private Transform _cargoDeliverSpot;
 
+    [SerializeField] private TextMeshProUGUI _cargoCountTMP;
+
     private bool _isUsed;
     private float _heightOfTheStack;
+
+    private void Start()
+    {
+        _cargoCountTMP.text = $"x {_expectedCargoCount}";
+    }
 
     public void Interact(PlayerController playerController)
     {
